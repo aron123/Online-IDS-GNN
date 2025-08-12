@@ -1,0 +1,4 @@
+.conda/
+logs/
+__pycache__/
+tmp/**.pt
