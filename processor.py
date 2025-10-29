@@ -5,13 +5,17 @@ import dgl
 
 from dataset import GraphDataset
 
-def process_data(logger, data_csv_path, timegroup_label_csv_path, label_mapping_csv_path):
+def process_data(logger, data_csv_path, timegroup_label_csv_path, label_mapping_csv_path, binary=False):
     logger.info(f'Processing data from {data_csv_path} ...')
 
     # Load CSV files
     df = pd.read_csv(data_csv_path)
     timegroup_labels = pd.read_csv(timegroup_label_csv_path)
     label_mapping_df = pd.read_csv(label_mapping_csv_path)
+
+    if binary:
+        label_mapping_df = pd.DataFrame({ 'label': ['attack', 'normal'] })
+        timegroup_labels['label'] = timegroup_labels['label'].apply(lambda x: 'normal' if x == 'normal' else 'attack')
 
     # Create mappings
     timegroup_to_label = dict(zip(timegroup_labels['time_group'], timegroup_labels['label']))
@@ -32,6 +36,9 @@ def process_data(logger, data_csv_path, timegroup_label_csv_path, label_mapping_
         node_map = {}
         node_id = 0
         edges_src, edges_dst, edge_feats = [], [], []
+        has_attack = 'attack' in group_df.columns
+        if has_attack:
+            edge_attacks = []
 
         for _, row in group_df.iterrows():
             src, dst = row['src'], row['dst']
@@ -49,8 +56,21 @@ def process_data(logger, data_csv_path, timegroup_label_csv_path, label_mapping_
             edges_dst.append(dst_id)
             edge_feats.append(features)
 
+            if has_attack:
+                attack_flag = torch.tensor([row['attack']], dtype=torch.float32)
+                edge_attacks.append(attack_flag)
+
         g = dgl.graph((edges_src, edges_dst), num_nodes=len(node_map))
         g.edata['feat'] = torch.stack(edge_feats)
+
+        # for interpretation labeling
+        id2addr = [None] * len(node_map)
+        for addr, nid in node_map.items():
+            id2addr[nid] = addr
+        g.id2addr = id2addr
+
+        if has_attack:
+            g.edata['attack'] = torch.cat(edge_attacks, dim=0)
 
         feat_dim = edge_feats[0].shape[0]
         g.ndata['feat'] = torch.ones((g.num_nodes(), feat_dim), dtype=torch.float32)

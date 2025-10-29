@@ -3,12 +3,14 @@ import os
 import sys
 from datetime import datetime
 
-def init_logger():
+def init_logger(experiment_label=""):
     os.makedirs("logs", exist_ok=True)
 
     # Create timestamped log filename
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    log_filename = f"logs/{timestamp}.log"
+    log_filename = datetime.now().strftime("%Y%m%d_%H%M%S")
+    if len(experiment_label) > 0:
+        log_filename = f"{log_filename}-{experiment_label}"
+    log_filename = f"logs/{log_filename}.log"
 
     # Set up the logger
     logger = logging.getLogger("custom_logger")

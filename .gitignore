@@ -1,4 +1,7 @@
 .conda/
-logs/
+logs/*.log
 __pycache__/
-tmp/**.pt
+tmp/**/**.pt
+tmp/**/**.pkl
+tmp/xai
+tmp/fig
