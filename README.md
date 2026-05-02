@@ -2,6 +2,18 @@
 
 Core codebase of the paper "Online Intrusion Detection in Computer Networks Using Edge-Aware Attentive Graph Neural Network".
 
+## Installation
+Under Ubuntu, you can use the following commands to install dependencies to a new Python virtual environment:
+
+```sh
+python3 -m venv .venv/
+source .venv/bin/activate
+pip install torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0 --index-url https://download.pytorch.org/whl/cu124
+pip install  dgl -f https://data.dgl.ai/wheels/torch-2.4/cu124/repo.html
+pip install scikit-learn==1.6.1
+pip install matplotlib==3.10.9
+```
+
 ## Usage
 
 `main.py` accepts the following arguments:
