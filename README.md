@@ -46,7 +46,21 @@ Please consult the source code for further details.
 
 ## Citation
 
-Publication is in progress.
+Kiss Á, Nehéz K, Hornyák O. Online intrusion detection in computer networks using edge-aware attentive graph neural network. Intelligent Data Analysis: An International Journal. 2026;0(0). doi:10.1177/1088467X261488186
+
+```bib
+@article{Kiss2026,
+  title = {Online intrusion detection in computer networks using edge-aware attentive graph neural network},
+  ISSN = {1571-4128},
+  url = {http://dx.doi.org/10.1177/1088467X261488186},
+  DOI = {10.1177/1088467x261488186},
+  journal = {Intelligent Data Analysis: An International Journal},
+  publisher = {SAGE Publications},
+  author = {Kiss,  Áron and Nehéz,  Károly and Hornyák,  Olivér},
+  year = {2026},
+  month = Sept 
+}
+```
 
 ## Contact
 
